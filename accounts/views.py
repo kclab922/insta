@@ -52,3 +52,5 @@ def profile(request, username):
     }
 
     return render(request, 'profile.html', context)
+
+

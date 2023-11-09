@@ -1,11 +1,14 @@
 <div class="card my-3 col-12 col-md-6 ">
     <div class="card-header">
         <img src="{{ post.user.profile_image.url }}" alt="" class="rounded-circle" width="70px">
-        <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none">{{ post.user }}</a>
+        <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none" style="font-size:20px">{{ post.user }}</a>
+        {% if user == post.user %}
+            <button href="{% url 'posts:delete' id=post.id %}" type="button" class="btn btn-outline-dark btn-sm" style="float:right ">Delete</button>
+        {% endif %}
     </div>
     <img src="{{ post.image.url }}" alt="">
-    <div class="card-body">
+    <div class="card-body" >
         <i class="bi bi-heart"></i>
-        <p class="cart-text">{{ post.content }}</p>
+        <p class="cart-text" style="font-size:x-large">{{ post.content }}</p>
     </div>
 </div>
