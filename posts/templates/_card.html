@@ -1,3 +1,5 @@
+{% load bootstrap5 %}
+
 <div class="card my-3 col-12 col-md-6 ">
     <div class="card-header">
         {% if post.user.profile_image %}
@@ -5,10 +7,16 @@
         {% else %}
             <img src="/media/profile/default.jpeg" alt="" class="rounded-circle" width="50px">
         {% endif %}
-            <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none" style="font-size:20px">{{ post.user }}</a>
+        
+        <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none" style="font-size:20px">{{ post.user }}</a>
+        
         {% if user == post.user %}
-            <button href="{% url 'posts:delete' id=post.id %}" type="button" class="btn btn-outline-dark btn-sm" style="float:right ">Delete</button>
+            <div class="btn-group" role="group" aria-label="Basic example" style="float:right">
+                <a href="{% url 'posts:update' id=post.id %}" class="button btn btn-outline-dark btn-sm">Update</a>
+                <a href="{% url 'posts:delete' id=post.id %}" class="button btn btn-outline-dark btn-sm">Delete</a>
+            </div>
         {% endif %}
+
     </div>
     <img src="{{ post.image.url }}" alt="">
     <div class="card-body" >
@@ -21,4 +29,24 @@
         </a> {{ post.like_users.all|length }}명이 좋아합니다.
         <p class="cart-text" style="font-size:large">{{ post.content }}</p>
     </div>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %} 
+            <input type="submit">
+        </form>
+    {% endif %}
+
+    <hr>
+
+    {% for comment in post.comment_set.all %}
+        <p>
+            {{ comment.user }} : {{ comment.content }}
+            <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
+        </p>
+    {% endfor %}
+
 </div>

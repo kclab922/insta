@@ -1,6 +1,7 @@
 from django.db import models
 from django_resized import ResizedImageField
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 class Post(models.Model):
@@ -18,3 +19,7 @@ class Post(models.Model):
     # => User 쪽에 자동생성되는 post_set도 2개가 만들어짐 -> 이름 중복되므로 하나 변경
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts')
 
+class Comment(models.Model):
+    content = models.TextField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
