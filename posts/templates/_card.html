@@ -1,7 +1,11 @@
 <div class="card my-3 col-12 col-md-6 ">
     <div class="card-header">
-        <img src="{{ post.user.profile_image.url }}" alt="" class="rounded-circle" width="70px">
-        <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none" style="font-size:20px">{{ post.user }}</a>
+        {% if post.user.profile_image %}
+            <img src="{{ post.user.profile_image.url }}" alt="" class="rounded-circle" width="50px">
+        {% else %}
+            <img src="/media/profile/default.jpeg" alt="" class="rounded-circle" width="50px">
+        {% endif %}
+            <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none" style="font-size:20px">{{ post.user }}</a>
         {% if user == post.user %}
             <button href="{% url 'posts:delete' id=post.id %}" type="button" class="btn btn-outline-dark btn-sm" style="float:right ">Delete</button>
         {% endif %}

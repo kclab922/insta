@@ -3,7 +3,11 @@
 {% block body %}
     <div class="row">
         <div class="col-4 mt-5">
-            <img src="{{ user_info.profile_image.url }}" alt="" class="rounded-circle img-fluid">
+            {% if user_info.profile_image %}
+                <img src="{{ user_info.profile_image.url }}" alt="" class="rounded-circle img-fluid">
+            {% else%}
+                <img src="/media/profile/default.jpeg" alt="" class="rounded-circle img-fluid">
+            {% endif %}
         </div>
         <div class="col-8 mt-5">
             <div class="row">
