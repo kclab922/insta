@@ -3,6 +3,8 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from .models import User
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def signup(request):
@@ -52,5 +54,22 @@ def profile(request, username):
     }
 
     return render(request, 'profile.html', context)
+
+
+@login_required
+def follows(request, username):
+    me = request.user
+    you = User.objects.get(username=username)
+
+    # 이미 팔로우중인 경우
+    # if me in you.followers.all():
+    if you in me.followings.all():
+        me.followings.remove(you)
+
+    # 아직 팔로우를 안 하고 있던 경우
+    else:
+        me.followings.add(you)
+
+    return redirect('accounts:profile', username=username)
 
 
